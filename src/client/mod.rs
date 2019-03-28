@@ -1,3 +1,4 @@
+use std::fmt;
 use std::rc::Rc;
 
 use failure::Error;
@@ -11,7 +12,7 @@ use super::config::Configuration;
 ///
 /// Replacement data for reqwest::Response::error_for_status
 /// because it hardly ever includes good permission errors
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Fail)]
 pub struct APIError {
     status: String,
     #[serde(default)]
@@ -19,6 +20,16 @@ pub struct APIError {
     #[serde(default)]
     reason: Option<String>,
     code: u16,
+}
+
+impl fmt::Display for APIError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(
+            f,
+            "Status: {}; Message: {:?}; Reason: {:?}; code: {}",
+            self.status, self.message, self.reason, self.code
+        )
+    }
 }
 
 /// APIClient requires `config::Configuration` includes client to connect with kubernetes cluster.
