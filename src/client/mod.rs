@@ -12,7 +12,7 @@ use super::config::Configuration;
 /// Replacement data for reqwest::Response::error_for_status
 /// because it hardly ever includes good permission errors
 #[derive(Deserialize, Debug)]
-pub struct ApiError {
+pub struct APIError {
     status: String,
     #[serde(default)]
     message: Option<String>,
@@ -53,10 +53,10 @@ impl APIClient {
         if !res.status().is_success() {
             let text = res.text()?;
             // Print better debug when things do fail
-            if let Ok(errdata) = serde_json::from_str::<ApiError>(&text) {
+            if let Ok(errdata) = serde_json::from_str::<APIError>(&text) {
                 println!("Unsuccessful: {:?}", errdata);
             } else {
-                // In case some parts of ApiError for some reason don't exist..
+                // In case some parts of APIError for some reason don't exist..
                 println!("Unsuccessful data: {}", text);
             }
             // Propagate errors properly via reqwest
@@ -91,10 +91,10 @@ impl APIClient {
         if !res.status().is_success() {
             let text = res.text()?;
             // Print better debug when things do fail
-            if let Ok(errdata) = serde_json::from_str::<ApiError>(&text) {
+            if let Ok(errdata) = serde_json::from_str::<APIError>(&text) {
                 println!("Unsuccessful: {:?}", errdata);
             } else {
-                // In case some parts of ApiError for some reason don't exist..
+                // In case some parts of APIError for some reason don't exist..
                 println!("Unsuccessful data: {}", text);
             }
             // Propagate errors properly via reqwest
