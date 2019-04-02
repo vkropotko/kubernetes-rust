@@ -55,6 +55,7 @@ impl APIClient {
             http::Method::POST => self.configuration.client.post(&uri_str),
             http::Method::DELETE => self.configuration.client.delete(&uri_str),
             http::Method::PUT => self.configuration.client.put(&uri_str),
+            http::Method::PATCH => self.configuration.client.patch(&uri_str),
             other => {
                 return Err(Error::from(format_err!("Invalid method: {}", other)));
             }
